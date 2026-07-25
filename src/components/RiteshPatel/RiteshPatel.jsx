@@ -180,7 +180,7 @@ const CommitmentToGrowth = ({ theme }) => (
 
     <div className="rp-calendar-wrap">
       <GitHubCalendar
-        username="riteshpatel1884"
+        username="ritesh1884"
         colorScheme={theme}
         theme={{
           light: ["rgba(30,28,22,0.08)", "#cdd9c4", "#93b586", "#5c9260", "#33553c"],
