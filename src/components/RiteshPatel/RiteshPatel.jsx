@@ -128,6 +128,8 @@ const projects = [
     date: "Jun — Aug 2026",
     title: "Ambiguity-Aware RAG Text-to-SQL System",
     subtitle: "DataPilot — natural language to SQL over 100+ columns",
+    link: "datapilot-dp.vercel.app",
+    href: "https://datapilot-dp.vercel.app",
     points: [
       "Built a RAG-based Text-to-SQL system using LLMs, embeddings and vector search over PostgreSQL, achieving 87% SQL execution accuracy on 100+ test queries.",
       "Designed an ambiguity detection layer classifying queries as clear/ambiguous/invalid with 91% classification accuracy, reducing incorrect SQL execution by 35%.",
@@ -140,8 +142,8 @@ const projects = [
     date: "Mar — May 2026",
     title: "Job Application Tracker & Rejection Analytics",
     subtitle: "Road to Offer — end-to-end application tracking",
-    link: "road-to-offer.vercel.app",
-    href: "https://road-to-offer.vercel.app",
+    link: "leaderlab.in",
+    href: "https://leaderlab.in",
     points: [
       "Built a platform to track job applications end-to-end, logging status, rejection stage and rejection reason (resume screening, technical round, skill gap, etc.) across 40+ tracked applications.",
       "Designed a rejection-pattern analytics dashboard classifying rejection causes, helping users identify whether failures are resume-driven or skill-gap-driven.",
@@ -359,7 +361,7 @@ export default function Portfolio() {
               Ritesh Patel
             </h1>
             <p className="rp-eyebrow" style={{ marginTop: 12 }}>
-              GenAI Developer / Full-Stack Engineer
+              AI Engineer
             </p>
             <div className="flex flex-wrap gap-x-5 gap-y-2 mt-4 rp-mono" style={{ fontSize: 12, color: "var(--muted)" }}>
               <span className="flex items-center gap-1.5"><PinIcon size={13} /> Ghaziabad, India</span>
@@ -396,15 +398,7 @@ export default function Portfolio() {
 
         <hr className="rp-rule mb-10" />
 
-        {/* Summary */}
-        <section className="mb-12">
-          <p style={{ fontSize: 15, lineHeight: 1.7, color: "var(--ink)", maxWidth: 640 }}>
-            Fourth year Computer Science student building expertise in <strong>Backend Engineering and
-            Generative AI</strong>. Experienced in designing scalable backend systems, secure APIs,
-            databases, authentication, and deploying full-stack applications while exploring
-            AI-driven products and intelligent software.
-          </p>
-        </section>
+    
 
         {/* Commitment to Growth */}
         <section className="mb-12">
