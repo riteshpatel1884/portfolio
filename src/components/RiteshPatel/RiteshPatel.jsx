@@ -196,8 +196,8 @@ const CommitmentToGrowth = ({ theme }) => (
         username="riteshpatel1884"
         colorScheme={theme}
         theme={{
-          light: ["rgba(30,28,22,0.08)", "#cdd9c4", "#93b586", "#5c9260", "#33553c"],
-          dark: ["rgba(236,229,212,0.06)", "#2a3a28", "#3d5b3c", "#588a55", "#86b98d"],
+          light: ["#efefef", "#c4c4c4", "#8a8a8a", "#4a4a4a", "#0a0a0a"],
+          dark: ["#1c1c1c", "#3a3a3a", "#666666", "#a8a8a8", "#f5f5f5"],
         }}
         fontSize={12}
         blockSize={11}
@@ -218,15 +218,16 @@ export default function Portfolio() {
     <div className="rp-resume" data-theme={theme}>
       <style>{`
         .rp-resume {
-          --paper: #f6f2e8;
-          --paper-2: #efe9db;
-          --ink: #1e1c16;
-          --muted: #746c5c;
-          --rule: rgba(30,28,22,0.14);
-          --accent: #33553c;
-          --accent-2: #a6763a;
-          --card: #fffdf8;
-          --shadow: rgba(30,28,22,0.08);
+          --paper: #ffffff;
+          --paper-2: #f2f2f2;
+          --ink: #0a0a0a;
+          --muted: #6e6e6e;
+          --rule: rgba(10,10,10,0.16);
+          --accent: #0a0a0a;
+          --accent-2: #0a0a0a;
+          --card: #ffffff;
+          --shadow: rgba(10,10,10,0.06);
+          --invert: #ffffff;
           font-family: ui-sans-serif, -apple-system, "Segoe UI", Roboto, sans-serif;
           background: var(--paper);
           color: var(--ink);
@@ -234,15 +235,16 @@ export default function Portfolio() {
           transition: background 0.35s ease, color 0.35s ease;
         }
         .rp-resume[data-theme='dark'] {
-          --paper: #16150f;
-          --paper-2: #1d1c15;
-          --ink: #ece5d4;
-          --muted: #a39a86;
-          --rule: rgba(236,229,212,0.14);
-          --accent: #86b98d;
-          --accent-2: #d9a75f;
-          --card: #1c1b14;
-          --shadow: rgba(0,0,0,0.5);
+          --paper: #0a0a0a;
+          --paper-2: #141414;
+          --ink: #f5f5f5;
+          --muted: #969696;
+          --rule: rgba(245,245,245,0.16);
+          --accent: #f5f5f5;
+          --accent-2: #f5f5f5;
+          --card: #111111;
+          --shadow: rgba(0,0,0,0.6);
+          --invert: #0a0a0a;
         }
         .rp-serif { font-family: Georgia, "Iowan Old Style", "Palatino Linotype", "Times New Roman", serif; }
         .rp-mono { font-family: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace; }
@@ -251,26 +253,59 @@ export default function Portfolio() {
           font-size: 11px;
           letter-spacing: 0.18em;
           text-transform: uppercase;
-          color: var(--muted);
-          font-weight: 600;
+          color: var(--ink);
+          font-weight: 700;
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+        }
+        .rp-eyebrow::before {
+          content: "";
+          width: 14px;
+          height: 1px;
+          background: var(--ink);
+          display: inline-block;
         }
         .rp-caption { font-size: 12px; color: var(--muted); margin-top: 2px; }
         .rp-card {
           background: var(--card);
           border: 1px solid var(--rule);
-          border-radius: 4px;
-          box-shadow: 0 1px 2px var(--shadow);
+          border-radius: 0;
+          box-shadow: none;
         }
-        .rp-rule { border: none; border-top: 1px solid var(--rule); margin: 0; }
-        .rp-toggle {
-          width: 40px; height: 40px; border-radius: 999px;
-          border: 1px solid var(--rule);
-          background: var(--card);
+        .rp-rule { border: none; border-top: 1px solid var(--ink); margin: 0; }
+        .rp-rule-thin { border: none; border-top: 1px solid var(--rule); margin: 0; }
+
+        /* Signature toggle — sliding switch, not an icon button */
+        .rp-switch {
+          width: 64px; height: 32px;
+          border: 1px solid var(--ink);
+          border-radius: 999px;
+          background: var(--paper);
+          position: relative;
+          cursor: pointer;
+          padding: 0;
+          flex-shrink: 0;
+          transition: background 0.3s ease;
+        }
+        .rp-switch-knob {
+          position: absolute;
+          top: 2px; left: 2px;
+          width: 26px; height: 26px;
+          border-radius: 999px;
+          background: var(--ink);
+          color: var(--paper);
           display: flex; align-items: center; justify-content: center;
-          color: var(--ink); cursor: pointer;
-          transition: background 0.2s ease, transform 0.2s ease;
+          transition: transform 0.32s cubic-bezier(.65,0,.35,1), background 0.3s ease, color 0.3s ease;
         }
-        .rp-toggle:hover { transform: rotate(20deg); }
+        .rp-resume[data-theme='dark'] .rp-switch-knob { transform: translateX(32px); }
+        .rp-switch-label {
+          font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+          font-size: 10px;
+          letter-spacing: 0.14em;
+          text-transform: uppercase;
+          color: var(--muted);
+        }
 
         /* Commitment to Growth card */
         .rp-ledger { padding: 28px 24px; margin: 0; position: relative; }
@@ -278,23 +313,30 @@ export default function Portfolio() {
         .rp-calendar-wrap { overflow-x: auto; padding: 4px 2px 6px; }
         .rp-calendar-wrap .react-activity-calendar__scroll-container { padding-bottom: 4px; }
         .rp-calendar-wrap text { fill: var(--muted) !important; font-family: ui-monospace, monospace !important; }
-        .rp-calendar-wrap svg rect { rx: 2px; }
 
-        /* Skill pill */
+        /* Skill pill — flat outlined rectangle, no radius */
         .rp-pill {
-          border: 1px solid var(--rule); border-radius: 999px; padding: 4px 12px;
-          font-size: 12px; color: var(--ink); white-space: nowrap;
+          border: 1px solid var(--ink); border-radius: 0; padding: 4px 11px;
+          font-size: 11.5px; color: var(--ink); white-space: nowrap;
+          font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+          transition: background 0.15s ease, color 0.15s ease;
         }
+        .rp-pill:hover { background: var(--ink); color: var(--paper); }
 
         /* Timeline dot */
-        .rp-dot { width: 7px; height: 7px; border-radius: 999px; background: var(--accent); }
+        .rp-dot { width: 6px; height: 6px; border-radius: 0; background: var(--ink); transform: rotate(45deg); }
 
         /* Project link */
-        .rp-project-link { text-decoration: none; border-bottom: 1px solid transparent; transition: border-color 0.15s ease; }
-        .rp-project-link:hover { border-color: var(--accent); }
+        .rp-project-link { text-decoration: none; border-bottom: 1px solid var(--ink); padding-bottom: 1px; }
+
+        .rp-index {
+          font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+          font-size: 11px;
+          color: var(--muted);
+        }
 
         @media print {
-          .rp-toggle { display: none; }
+          .rp-switch { display: none; }
         }
       `}</style>
 
@@ -302,11 +344,22 @@ export default function Portfolio() {
         {/* Masthead */}
         <header className="flex items-start justify-between gap-6 mb-10">
           <div>
-            <h1 className="rp-serif" style={{ fontSize: "clamp(30px, 5vw, 44px)", fontWeight: 700, letterSpacing: "-0.01em", lineHeight: 1.05 }}>
+            <h1
+              className="rp-serif"
+              style={{
+                fontSize: "clamp(34px, 6vw, 52px)",
+                fontWeight: 700,
+                letterSpacing: "-0.02em",
+                lineHeight: 1.0,
+                borderBottom: "3px solid var(--ink)",
+                display: "inline-block",
+                paddingBottom: 6,
+              }}
+            >
               Ritesh Patel
             </h1>
-            <p className="rp-eyebrow" style={{ marginTop: 8 }}>
-              GenAI Developer · Full-Stack Engineer
+            <p className="rp-eyebrow" style={{ marginTop: 12 }}>
+              GenAI Developer / Full-Stack Engineer
             </p>
             <div className="flex flex-wrap gap-x-5 gap-y-2 mt-4 rp-mono" style={{ fontSize: 12, color: "var(--muted)" }}>
               <span className="flex items-center gap-1.5"><PinIcon size={13} /> Ghaziabad, India</span>
@@ -318,19 +371,24 @@ export default function Portfolio() {
           </div>
 
           <div className="flex flex-col items-end gap-4 shrink-0">
-            <button
-              onClick={() => setTheme(theme === "light" ? "dark" : "light")}
-              className="rp-toggle"
-              aria-label="Toggle theme"
-            >
-              {theme === "light" ? <SunIcon size={17} /> : <MoonIcon size={17} />}
-            </button>
-            <div className="flex gap-3" style={{ color: "var(--muted)" }}>
+            <div className="flex items-center gap-2">
+              <span className="rp-switch-label">{theme === "light" ? "Day" : "Night"}</span>
+              <button
+                onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+                className="rp-switch"
+                aria-label="Toggle theme"
+              >
+                <span className="rp-switch-knob">
+                  {theme === "light" ? <SunIcon size={13} /> : <MoonIcon size={13} />}
+                </span>
+              </button>
+            </div>
+            <div className="flex gap-3" style={{ color: "var(--ink)" }}>
               <a href="https://github.com/riteshpatel1884" target="_blank" rel="noopener noreferrer">
-                <GithubIcon size={17} className="hover:opacity-60 cursor-pointer" />
+                <GithubIcon size={17} className="hover:opacity-50 cursor-pointer" />
               </a>
               <a href="https://linkedin.com/in/riteshpatel1884" target="_blank" rel="noopener noreferrer">
-                <LinkedinIcon size={17} className="hover:opacity-60 cursor-pointer" />
+                <LinkedinIcon size={17} className="hover:opacity-50 cursor-pointer" />
               </a>
             </div>
           </div>
@@ -409,8 +467,9 @@ export default function Portfolio() {
                 style={{ borderTop: i === 0 ? "none" : "1px solid var(--rule)" }}
               >
                 <div>
-                  <span className="rp-mono block" style={{ fontSize: 11, color: "var(--muted)" }}>{p.date}</span>
-                  <span className="rp-mono block mt-1" style={{ fontSize: 10, color: "var(--accent-2)", letterSpacing: "0.06em", textTransform: "uppercase" }}>
+                  <span className="rp-index block">{String(i + 1).padStart(2, "0")}</span>
+                  <span className="rp-mono block mt-2" style={{ fontSize: 11, color: "var(--muted)" }}>{p.date}</span>
+                  <span className="rp-mono block mt-1" style={{ fontSize: 10, color: "var(--ink)", letterSpacing: "0.06em", textTransform: "uppercase", fontWeight: 700 }}>
                     {p.tag}
                   </span>
                 </div>
@@ -423,7 +482,7 @@ export default function Portfolio() {
                         target="_blank"
                         rel="noopener noreferrer"
                         className="flex items-center gap-1 rp-mono rp-project-link"
-                        style={{ fontSize: 11, color: "var(--accent)" }}
+                        style={{ fontSize: 11, color: "var(--ink)" }}
                       >
                         <ArrowIcon size={11} /> {p.link}
                       </a>
@@ -480,7 +539,7 @@ export default function Portfolio() {
                   </div>
                   <div className="text-right shrink-0">
                     <span className="rp-mono block" style={{ fontSize: 11, color: "var(--muted)" }}>{e.year}</span>
-                    <span className="rp-mono block mt-1" style={{ fontSize: 12.5, color: "var(--accent)", fontWeight: 700 }}>{e.score}</span>
+                    <span className="rp-mono block mt-1" style={{ fontSize: 12.5, color: "var(--ink)", fontWeight: 700 }}>{e.score}</span>
                   </div>
                 </div>
               ))}
@@ -494,7 +553,7 @@ export default function Portfolio() {
           <div className="flex flex-col gap-3">
             {certifications.map((c) => (
               <div key={c.title} className="flex items-start gap-3" style={{ fontSize: 13.5, color: "var(--ink)" }}>
-                <AwardIcon size={16} className="shrink-0" style={{ color: "var(--accent)", marginTop: 2 }} />
+                <AwardIcon size={16} className="shrink-0" style={{ color: "var(--ink)", marginTop: 2 }} />
                 <div className="flex flex-col md:flex-row md:items-baseline md:gap-3">
                   <span>{c.title}</span>
                   <span className="rp-mono" style={{ fontSize: 11, color: "var(--muted)" }}>{c.date}</span>
@@ -505,10 +564,9 @@ export default function Portfolio() {
         </section>
 
         {/* Contact */}
-        <section style={{ borderTop: "1px solid var(--rule)", paddingTop: 32 }} className="flex flex-col md:flex-row justify-between gap-6">
+        <section style={{ borderTop: "1px solid var(--ink)", paddingTop: 32 }} className="flex flex-col md:flex-row justify-between gap-6">
           <div>
-            <h2 className="rp-serif" style={{ fontSize: 26, fontWeight: 700 }}>Let's work together.</h2>
-           
+            <h2 className="rp-serif" style={{ fontSize: 28, fontWeight: 700 }}>Let's work together.</h2>
           </div>
           <a
             href="https://mail.google.com/mail/u/0/?fs=1&tf=cm&to=riteshpatel1884@gmail.com"
@@ -516,12 +574,16 @@ export default function Portfolio() {
             style={{
               fontSize: 12.5,
               padding: "10px 18px",
-              border: "1px solid var(--rule)",
-              borderRadius: 999,
+              border: "1px solid var(--ink)",
+              borderRadius: 0,
               color: "var(--ink)",
+              background: "var(--paper)",
+              transition: "background 0.15s ease, color 0.15s ease",
             }}
+            onMouseEnter={(ev) => { ev.currentTarget.style.background = "var(--ink)"; ev.currentTarget.style.color = "var(--paper)"; }}
+            onMouseLeave={(ev) => { ev.currentTarget.style.background = "var(--paper)"; ev.currentTarget.style.color = "var(--ink)"; }}
           >
-            <MailIcon size={14} /> Mail me 
+            <MailIcon size={14} /> Mail me
           </a>
         </section>
 
