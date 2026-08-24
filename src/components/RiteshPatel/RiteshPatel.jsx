@@ -70,99 +70,112 @@ const MoonIcon = (p) => (
     <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z" />
   </Icon>
 );
+const AwardIcon = (p) => (
+  <Icon {...p}>
+    <circle cx="12" cy="8" r="6" />
+    <path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11" />
+  </Icon>
+);
 
 /* ---------------------------------------------------------- */
-/* Data                                                         */
+/* Data — synced with resume                                   */
 /* ---------------------------------------------------------- */
 const skillGroups = [
-  { label: "Languages", items: ["Java", "Python", "JavaScript", "SQL"] },
+  { label: "Languages", items: ["Python", "Java", "JavaScript", "SQL"] },
   {
-    label: "GenAI / ML",
-    items: ["LLM Integration", "RAG", "TensorFlow", "Scikit-learn", "Computer Vision", "NLP"],
+    label: "AI / ML",
+    items: ["LLMs", "RAG", "Prompt Engineering", "Vector Search", "Model Evaluation", "PyTorch", "Hugging Face"],
   },
   {
-    label: "Web Stack",
-    items: ["Next.js", "React", "Node.js", "Express", "MongoDB", "Tailwind CSS"],
+    label: "Frameworks",
+    items: ["LangChain", "LangGraph", "FastAPI", "Next.js"],
   },
   {
-    label: "Data & Infra",
-    items: ["PostgreSQL", "Prisma", "Neon", "Clerk", "Git", "Docker", "Vercel"],
+    label: "Databases & Tools",
+    items: ["PostgreSQL", "MongoDB", "Docker", "Git", "GitHub", "OpenAI", "Gemini"],
   },
 ];
 
 const experience = [
   {
-    role: "Data Analytics Intern",
-    company: "Airkrit India Pvt. Ltd.",
-    date: "2025",
+    role: "Data Analyst Intern",
+    company: "Airkrit India",
+    date: "May — Aug 2026",
     points: [
-      "Cleaned and analysed a 10-sheet Credit_Banking Excel workbook covering spend, repayment and interest calculations.",
-      "Delivered segment-level insights to support lending decisions.",
+      "Built data preprocessing pipelines (Python, Pandas, NumPy) on 10K+ records, applying cleaning, feature engineering and anomaly detection techniques.",
+      "Applied statistical analysis and pattern detection to identify sales and customer behavior trends, feeding into 15+ visualizations for stakeholder decision-making.",
+      "Automated report generation using LLM-based summarization, reducing manual reporting time by 30%.",
     ],
-    tech: ["Excel", "Data Cleaning", "Financial Analysis"],
+    tech: ["Python", "Pandas", "NumPy", "LLM Summarization"],
   },
 ];
 
 const projects = [
   {
+    tag: "GenAI Platform",
+    date: "Aug 2026 — Present",
+    title: "LLM Evaluation Platform",
+    subtitle: "Full-stack eval suite for LLM & RAG quality",
+    points: [
+      "Built a full-stack eval platform supporting rule-based, embedding-similarity and LLM-as-a-judge scoring (faithfulness, relevance, hallucination detection) across 150+ test cases.",
+      "Implemented regression tracking across prompt/model versions, enabling before/after comparison of eval scores to catch quality drops from prompt or retrieval changes.",
+      "Applied the platform to evaluate a self-built RAG system, using Ragas metrics for context precision, context recall and faithfulness to validate retrieval quality improvements.",
+    ],
+    tech: ["FastAPI", "Next.js", "PostgreSQL", "Groq API", "Ragas"],
+  },
+  {
+    tag: "GenAI / RAG",
+    date: "Jun — Aug 2026",
+    title: "Ambiguity-Aware RAG Text-to-SQL System",
+    subtitle: "DataPilot — natural language to SQL over 100+ columns",
+    points: [
+      "Built a RAG-based Text-to-SQL system using LLMs, embeddings and vector search over PostgreSQL, achieving 87% SQL execution accuracy on 100+ test queries.",
+      "Designed an ambiguity detection layer classifying queries as clear/ambiguous/invalid with 91% classification accuracy, reducing incorrect SQL execution by 35%.",
+      "Built multi-turn clarification workflows for ambiguous queries with schema-aware retrieval across 20+ tables and 100+ columns, plus SELECT-only guardrails preventing destructive query execution.",
+    ],
+    tech: ["Python", "FastAPI", "RAG", "LangChain"],
+  },
+  {
     tag: "Web Platform",
-    date: "Jun 2026 — Present",
-    title: "Road to Offer",
-    subtitle: "45-day placement preparation tracker",
+    date: "Mar — May 2026",
+    title: "Job Application Tracker & Rejection Analytics",
+    subtitle: "Road to Offer — end-to-end application tracking",
     link: "road-to-offer.vercel.app",
     href: "https://road-to-offer.vercel.app",
     points: [
-      "Built a Next.js study tracker spanning DSA, Data Analyst, GenAI, Backend, Core and Aptitude tracks with per-topic tagging, notes and a “Today” filter.",
-      "Implemented a full dark/light theming system driven by CSS variables across every view.",
-      "Added Vercel Analytics to monitor daily study consistency.",
+      "Built a platform to track job applications end-to-end, logging status, rejection stage and rejection reason (resume screening, technical round, skill gap, etc.) across 40+ tracked applications.",
+      "Designed a rejection-pattern analytics dashboard classifying rejection causes, helping users identify whether failures are resume-driven or skill-gap-driven.",
+      "Built visual analytics (charts/graphs) showing rejection rate by stage and reason category, giving users a clear, data-backed view of where to focus improvement efforts.",
     ],
-    tech: ["Next.js", "Tailwind", "CSS Variables", "Vercel Analytics"],
-  },
-  {
-    tag: "Web Platform",
-    date: "2025 — 2026",
-    title: "LeaderLab",
-    subtitle: "Job application tracker & analytics suite",
-    link: "leaderlab.in",
-    href: "https://leaderlab.in",
-    points: [
-      "Designed an analytics dashboard with Recharts — radar charts, activity heatmaps and custom dark tooltips.",
-      "Built a Prep Tracker linking daily study plans to live job applications.",
-      "Automated day-complete, follow-up and weekly-digest emails via Resend and Vercel cron.",
-    ],
-    tech: ["Next.js", "Recharts", "Resend", "Prisma", "Clerk"],
-  },
-  {
-    tag: "Machine Learning",
-    date: "Academic Project · KIET",
-    title: "MedLeaf-ViT",
-    subtitle: "Medicinal plant identification, CNN-ViT hybrid",
-    points: [
-      "Co-developed a hybrid CNN-Vision Transformer architecture to classify 120+ medicinal plant species for Ayurvedic raw-material authentication.",
-      "Trained and iterated on the model using a Kaggle workflow with peers at KIET.",
-    ],
-    tech: ["Python", "TensorFlow", "Computer Vision", "ViT"],
+    tech: ["Next.js", "JavaScript", "PostgreSQL"],
   },
 ];
 
 const education = [
   {
     degree: "B.Tech, Computer Science",
-    school: "KIET Group of Institutions",
-    year: "2023 — 2027",
-    score: "7.48 CGPA",
+    school: "KIET Deemed to be University",
+    year: "Oct 2023 — Jun 2027",
+    score: "7.48 GPA",
   },
   {
-    degree: "Senior Secondary (XII)",
-    school: "Rani Laxmi Bai School",
+    degree: "Class XII (ISC)",
+    school: "Rani Laxmi Bai Memorial School",
     year: "2021 — 2022",
     score: "84%",
   },
   {
-    degree: "Secondary (X)",
-    school: "Rani Laxmi Bai School",
+    degree: "Class X (ICSE)",
+    school: "Rani Laxmi Bai Memorial School",
     year: "2019 — 2020",
     score: "86%",
+  },
+];
+
+const certifications = [
+  {
+    title: "Oracle Cloud Infrastructure 2025 Certified Generative AI Professional",
+    date: "30 Sep 2025",
   },
 ];
 
@@ -313,8 +326,12 @@ export default function Portfolio() {
               {theme === "light" ? <SunIcon size={17} /> : <MoonIcon size={17} />}
             </button>
             <div className="flex gap-3" style={{ color: "var(--muted)" }}>
-              <GithubIcon size={17} className="hover:opacity-60 cursor-pointer" />
-              <LinkedinIcon size={17} className="hover:opacity-60 cursor-pointer" />
+              <a href="https://github.com/riteshpatel1884" target="_blank" rel="noopener noreferrer">
+                <GithubIcon size={17} className="hover:opacity-60 cursor-pointer" />
+              </a>
+              <a href="https://linkedin.com/in/riteshpatel1884" target="_blank" rel="noopener noreferrer">
+                <LinkedinIcon size={17} className="hover:opacity-60 cursor-pointer" />
+              </a>
             </div>
           </div>
         </header>
@@ -470,6 +487,22 @@ export default function Portfolio() {
             </div>
           </section>
         </div>
+
+        {/* Certifications */}
+        <section className="mb-12">
+          <h2 className="rp-eyebrow mb-6">Certifications</h2>
+          <div className="flex flex-col gap-3">
+            {certifications.map((c) => (
+              <div key={c.title} className="flex items-start gap-3" style={{ fontSize: 13.5, color: "var(--ink)" }}>
+                <AwardIcon size={16} className="shrink-0" style={{ color: "var(--accent)", marginTop: 2 }} />
+                <div className="flex flex-col md:flex-row md:items-baseline md:gap-3">
+                  <span>{c.title}</span>
+                  <span className="rp-mono" style={{ fontSize: 11, color: "var(--muted)" }}>{c.date}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
 
         {/* Contact */}
         <section style={{ borderTop: "1px solid var(--rule)", paddingTop: 32 }} className="flex flex-col md:flex-row justify-between gap-6">
