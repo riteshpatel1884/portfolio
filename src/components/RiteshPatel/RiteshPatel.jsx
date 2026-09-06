@@ -182,35 +182,6 @@ const calibration = [
   { value: 91, label: "Ambiguity classification accuracy", side: "right", rise: 54 },
 ];
 
-/* ---------------------------------------------------------- */
-/* Calibration strip — the hero's signature visual             */
-/* ---------------------------------------------------------- */
-const CalibrationStrip = () => {
-  const minorTicks = Array.from({ length: 11 }, (_, i) => i * 10);
-  return (
-    <div className="rp-cal">
-      <div className="rp-cal-track">
-        <div className="rp-cal-baseline" />
-        {minorTicks.map((t) => (
-          <span key={t} className="rp-cal-tick" style={{ left: `${t}%` }} />
-        ))}
-        {calibration.map((m) => (
-          <div
-            key={m.value}
-            className={`rp-cal-marker rp-cal-marker--${m.side}`}
-            style={{ left: `${m.value}%`, "--rise": `${m.rise}px` }}
-          >
-            <span className="rp-cal-stem" />
-            <span className="rp-cal-dot" />
-            <span className="rp-cal-readout">
-              <b>{m.value}%</b> {m.label}
-            </span>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-};
 
 /* ---------------------------------------------------------- */
 /* GitHub activity                                              */
@@ -337,6 +308,48 @@ export default function Portfolio() {
         }
         .rp-resume[data-theme='dark'] .rp-switch-knob { transform: translateX(28px); }
 
+        .rp-page { max-width: 1360px; width: 100%; }
+
+        /* Hero as a grid so mobile can reorder the toggle without duplicating markup */
+        .rp-hero-grid {
+          display: grid;
+          row-gap: 18px;
+          grid-template-columns: 1fr;
+          grid-template-areas:
+            "name"
+            "toggle"
+            "role"
+            "tagline"
+            "contact"
+            "cal"
+            "social";
+        }
+        @media (min-width: 768px) {
+          .rp-hero-grid {
+            column-gap: 40px;
+            row-gap: 4px;
+            grid-template-columns: 1fr auto;
+            grid-template-areas:
+              "name    toggle"
+              "role    social"
+              "tagline social"
+              "contact social"
+              "cal     social";
+            align-items: start;
+          }
+        }
+
+        /* Main/sidebar split — fills wide viewports without stretching prose */
+        .rp-layout {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 56px;
+        }
+        @media (min-width: 960px) {
+          .rp-layout { grid-template-columns: minmax(0, 1fr) 300px; gap: 72px; align-items: start; }
+          .rp-aside { position: sticky; top: 28px; }
+        }
+
         /* ---- Hero ---- */
         .rp-hero-name {
           font-size: clamp(36px, 6vw, 54px);
@@ -403,7 +416,7 @@ export default function Portfolio() {
 
         /* Activity */
         .rp-activity { padding: 28px 26px; margin: 0; }
-        .rp-calendar-wrap { overflow-x: auto; padding: 2px 2px 4px; }
+        .rp-calendar-wrap { display: flex; justify-content: center; overflow-x: auto; padding: 2px 2px 4px; }
         .rp-calendar-wrap text { fill: var(--muted) !important; font-family: 'IBM Plex Mono', monospace !important; }
 
         /* Timeline (experience + projects) */
@@ -429,6 +442,7 @@ export default function Portfolio() {
           font-size: 11px; color: var(--muted);
           display: block; margin-bottom: 6px;
         }
+        .rp-item-body { max-width: 640px; }
         .rp-item-title {
           font-family: 'Fraunces', Georgia, serif;
           font-weight: 600; font-size: 19px;
@@ -483,31 +497,17 @@ export default function Portfolio() {
         }
       `}</style>
 
-      <div className="max-w-[760px] mx-auto px-5 md:px-8 py-12 md:py-16">
+      <div className="rp-page mx-auto px-6 md:px-14 lg:px-20 py-12 md:py-16">
         {/* Hero */}
         <motion.header
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: "easeOut" }}
-          className="flex items-start justify-between gap-6 mb-16"
+          className="rp-hero-grid mb-16"
         >
-          <div>
-            <h1 className="rp-serif rp-hero-name">Ritesh Patel</h1>
-            <p className="rp-hero-role">AI Engineer — RAG systems &amp; LLM evaluation</p>
-            <p className="rp-hero-tagline">
-              I build retrieval systems, then build the harnesses that tell you whether to trust them.
-            </p>
+          <h1 className="rp-serif rp-hero-name" style={{ gridArea: "name" }}>Ritesh Patel</h1>
 
-            <div className="rp-contact-row">
-              <span><PinIcon size={13} /> Ghaziabad, India</span>
-              <a href="mailto:riteshpatel1884@gmail.com"><MailIcon size={13} /> riteshpatel1884@gmail.com</a>
-              <span><PhoneIcon size={13} /> +91 8858295418</span>
-            </div>
-
-            <CalibrationStrip />
-          </div>
-
-          <div className="flex flex-col items-end gap-5 shrink-0">
+          <div style={{ gridArea: "toggle" }} className="flex md:justify-end">
             <button
               onClick={() => setTheme(theme === "light" ? "dark" : "light")}
               className="rp-switch"
@@ -517,144 +517,165 @@ export default function Portfolio() {
                 {theme === "light" ? <SunIcon size={12} /> : <MoonIcon size={12} />}
               </span>
             </button>
-            <div className="flex gap-4">
-              <a href="https://github.com/riteshpatel1884" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
-                <GithubIcon size={18} className="hover:opacity-60" />
-              </a>
-              <a href="https://linkedin.com/in/riteshpatel1884" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
-                <LinkedinIcon size={18} className="hover:opacity-60" />
-              </a>
-            </div>
+          </div>
+
+          <p className="rp-hero-role" style={{ gridArea: "role" }}>AI Engineer </p>
+
+          <p className="rp-hero-tagline" style={{ gridArea: "tagline" }}>
+            I build intelligent systems with LLMs, RAG, and agents and engineer them for real world use.
+          </p>
+
+          <div className="rp-contact-row" style={{ gridArea: "contact" }}>
+            <span><PinIcon size={13} /> Ghaziabad, India</span>
+            <a href="mailto:riteshpatel1884@gmail.com"><MailIcon size={13} /> riteshpatel1884@gmail.com</a>
+            <span><PhoneIcon size={13} /> +91 8858295418</span>
+          </div>
+
+      
+
+          <div style={{ gridArea: "social" }} className="flex gap-4 md:justify-end md:items-start">
+            <a href="https://github.com/riteshpatel1884" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+              <GithubIcon size={18} className="hover:opacity-60" />
+            </a>
+            <a href="https://linkedin.com/in/riteshpatel1884" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+              <LinkedinIcon size={18} className="hover:opacity-60" />
+            </a>
           </div>
         </motion.header>
 
-        {/* GitHub activity */}
+        {/* GitHub activity — full width beneath the hero */}
         <section className="mb-14">
           <GithubActivity theme={theme} />
         </section>
 
-        {/* Experience */}
-        <section className="mb-14">
-          <div className="rp-section-head">
-            <span className="rp-tick" style={{ background: "var(--warm)" }} />
-            <div><h2>Experience</h2></div>
-          </div>
-          <div className="rp-timeline">
-            <div className="rp-timeline-rail" />
-            {experience.map((e) => (
-              <div key={e.company} className="rp-timeline-item">
-                <span className="rp-node-dot" style={{ "--dot-color": "var(--warm)" }} />
-                <span className="rp-node-date">{e.date}</span>
-                <h3 className="rp-serif rp-item-title">{e.role}</h3>
-                <p className="rp-item-sub">{e.company}</p>
-                <ul className="rp-item-points">
-                  {e.points.map((pt, idx) => <li key={idx}>{pt}</li>)}
-                </ul>
-                <div className="rp-tag-row">
-                  {e.tech.map((t) => (
-                    <span key={t} className="rp-tag" style={{ "--tag-bg": "var(--warm-soft)", "--tag-color": "var(--warm)" }}>{t}</span>
-                  ))}
-                </div>
+        <div className="rp-layout">
+          {/* Main column: the chronological record */}
+          <main>
+            <section className="mb-14">
+              <div className="rp-section-head">
+                <span className="rp-tick" style={{ background: "var(--warm)" }} />
+                <div><h2>Experience</h2></div>
               </div>
-            ))}
-          </div>
-        </section>
-
-        {/* Projects */}
-        <section className="mb-14">
-          <div className="rp-section-head">
-            <span className="rp-tick" />
-            <div><h2>Selected work</h2></div>
-          </div>
-          <div className="rp-timeline">
-            <div className="rp-timeline-rail" />
-            {projects.map((p, i) => {
-              const palette = tagPalette[i % tagPalette.length];
-              const tagBg = palette === "warm" ? "var(--warm-soft)" : "var(--accent-soft)";
-              const tagColor = palette === "warm" ? "var(--warm)" : "var(--accent)";
-              const dotColor = palette === "warm" ? "var(--warm)" : "var(--accent)";
-              return (
-                <div key={p.title} className="rp-timeline-item">
-                  <span className="rp-node-dot" style={{ "--dot-color": dotColor }} />
-                  <span className="rp-node-date">{p.date} · {p.tag}</span>
-                  <div className="flex items-baseline flex-wrap">
-                    <h3 className="rp-serif rp-item-title">{p.title}</h3>
-                    {p.link && (
-                      <a href={p.href} target="_blank" rel="noopener noreferrer" className="rp-project-link">
-                        {p.link}
-                      </a>
-                    )}
+              <div className="rp-timeline">
+                <div className="rp-timeline-rail" />
+                {experience.map((e) => (
+                  <div key={e.company} className="rp-timeline-item">
+                    <span className="rp-node-dot" style={{ "--dot-color": "var(--warm)" }} />
+                    <span className="rp-node-date">{e.date}</span>
+                    <div className="rp-item-body">
+                      <h3 className="rp-serif rp-item-title">{e.role}</h3>
+                      <p className="rp-item-sub">{e.company}</p>
+                      <ul className="rp-item-points">
+                        {e.points.map((pt, idx) => <li key={idx}>{pt}</li>)}
+                      </ul>
+                      <div className="rp-tag-row">
+                        {e.tech.map((t) => (
+                          <span key={t} className="rp-tag" style={{ "--tag-bg": "var(--warm-soft)", "--tag-color": "var(--warm)" }}>{t}</span>
+                        ))}
+                      </div>
+                    </div>
                   </div>
-                  <p className="rp-item-sub">{p.subtitle}</p>
-                  <ul className="rp-item-points">
-                    {p.points.map((pt, idx) => <li key={idx}>{pt}</li>)}
-                  </ul>
-                  <div className="rp-tag-row">
-                    {p.tech.map((t) => (
-                      <span key={t} className="rp-tag" style={{ "--tag-bg": tagBg, "--tag-color": tagColor }}>{t}</span>
-                    ))}
+                ))}
+              </div>
+            </section>
+
+            <section>
+              <div className="rp-section-head">
+                <span className="rp-tick" />
+                <div><h2>Selected work</h2></div>
+              </div>
+              <div className="rp-timeline">
+                <div className="rp-timeline-rail" />
+                {projects.map((p, i) => {
+                  const palette = tagPalette[i % tagPalette.length];
+                  const tagBg = palette === "warm" ? "var(--warm-soft)" : "var(--accent-soft)";
+                  const tagColor = palette === "warm" ? "var(--warm)" : "var(--accent)";
+                  const dotColor = palette === "warm" ? "var(--warm)" : "var(--accent)";
+                  return (
+                    <div key={p.title} className="rp-timeline-item">
+                      <span className="rp-node-dot" style={{ "--dot-color": dotColor }} />
+                      <span className="rp-node-date">{p.date} · {p.tag}</span>
+                      <div className="rp-item-body">
+                        <div className="flex items-baseline flex-wrap">
+                          <h3 className="rp-serif rp-item-title">{p.title}</h3>
+                          {p.link && (
+                            <a href={p.href} target="_blank" rel="noopener noreferrer" className="rp-project-link">
+                              {p.link}
+                            </a>
+                          )}
+                        </div>
+                        <p className="rp-item-sub">{p.subtitle}</p>
+                        <ul className="rp-item-points">
+                          {p.points.map((pt, idx) => <li key={idx}>{pt}</li>)}
+                        </ul>
+                        <div className="rp-tag-row">
+                          {p.tech.map((t) => (
+                            <span key={t} className="rp-tag" style={{ "--tag-bg": tagBg, "--tag-color": tagColor }}>{t}</span>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </section>
+          </main>
+
+          {/* Sidebar: glanceable facts, alongside the timeline on wide screens */}
+          <aside className="rp-aside">
+            <section className="mb-12">
+              <div className="rp-section-head">
+                <span className="rp-tick" style={{ background: "var(--warm)" }} />
+                <div><h2>Skills</h2></div>
+              </div>
+              {skillGroups.map((g) => (
+                <div key={g.label} className="rp-skill-group">
+                  <span className="rp-skill-label">{g.label}</span>
+                  <div className="rp-skill-tags">
+                    {g.items.map((s) => <span key={s} className="rp-skill-tag">{s}</span>)}
                   </div>
                 </div>
-              );
-            })}
-          </div>
-        </section>
+              ))}
+            </section>
 
-        {/* Skills + Education */}
-        <div className="grid md:grid-cols-2 gap-14 mb-14">
-          <section>
-            <div className="rp-section-head">
-              <span className="rp-tick" style={{ background: "var(--warm)" }} />
-              <div><h2>Skills</h2></div>
-            </div>
-            {skillGroups.map((g) => (
-              <div key={g.label} className="rp-skill-group">
-                <span className="rp-skill-label">{g.label}</span>
-                <div className="rp-skill-tags">
-                  {g.items.map((s) => <span key={s} className="rp-skill-tag">{s}</span>)}
-                </div>
+            <section className="mb-12">
+              <div className="rp-section-head">
+                <span className="rp-tick" />
+                <div><h2>Education</h2></div>
               </div>
-            ))}
-          </section>
+              {education.map((e) => (
+                <div key={e.degree} className="rp-edu-row">
+                  <div>
+                    <h4 className="rp-edu-degree">{e.degree}</h4>
+                    <p className="rp-edu-school">{e.school}</p>
+                  </div>
+                  <div>
+                    <span className="rp-edu-year">{e.year}</span>
+                    <span className="rp-edu-score">{e.score}</span>
+                  </div>
+                </div>
+              ))}
+            </section>
 
-          <section>
-            <div className="rp-section-head">
-              <span className="rp-tick" />
-              <div><h2>Education</h2></div>
-            </div>
-            {education.map((e) => (
-              <div key={e.degree} className="rp-edu-row">
-                <div>
-                  <h4 className="rp-edu-degree">{e.degree}</h4>
-                  <p className="rp-edu-school">{e.school}</p>
-                </div>
-                <div>
-                  <span className="rp-edu-year">{e.year}</span>
-                  <span className="rp-edu-score">{e.score}</span>
-                </div>
+            <section>
+              <div className="rp-section-head">
+                <span className="rp-tick" style={{ background: "var(--warm)" }} />
+                <div><h2>Certifications</h2></div>
               </div>
-            ))}
-          </section>
+              <div className="flex flex-col gap-3">
+                {certifications.map((c) => (
+                  <div key={c.title} className="flex items-start gap-3" style={{ fontSize: 13.5 }}>
+                    <AwardIcon size={16} className="shrink-0" style={{ color: "var(--warm)", marginTop: 2 }} />
+                    <div className="flex flex-col md:gap-1">
+                      <span>{c.title}</span>
+                      <span className="rp-mono" style={{ fontSize: 11, color: "var(--muted)" }}>{c.date}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </section>
+          </aside>
         </div>
-
-        {/* Certifications */}
-        <section className="mb-14">
-          <div className="rp-section-head">
-            <span className="rp-tick" style={{ background: "var(--warm)" }} />
-            <div><h2>Certifications</h2></div>
-          </div>
-          <div className="flex flex-col gap-3">
-            {certifications.map((c) => (
-              <div key={c.title} className="flex items-start gap-3" style={{ fontSize: 13.5 }}>
-                <AwardIcon size={16} className="shrink-0" style={{ color: "var(--warm)", marginTop: 2 }} />
-                <div className="flex flex-col md:flex-row md:items-baseline md:gap-3">
-                  <span>{c.title}</span>
-                  <span className="rp-mono" style={{ fontSize: 11, color: "var(--muted)" }}>{c.date}</span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
 
         {/* Contact */}
         <section style={{ borderTop: "1px solid var(--rule)", paddingTop: 34 }} className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
