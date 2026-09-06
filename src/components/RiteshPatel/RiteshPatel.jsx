@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import {GitHubCalendar} from "react-github-calendar";
+import { GitHubCalendar } from "react-github-calendar";
 
 /* ---------------------------------------------------------- */
 /* Icons                                                       */
@@ -51,12 +51,6 @@ const PinIcon = (p) => (
   <Icon {...p}>
     <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
     <circle cx="12" cy="10" r="3" />
-  </Icon>
-);
-const ArrowIcon = (p) => (
-  <Icon {...p}>
-    <path d="M7 7h10v10" />
-    <path d="M7 17 17 7" />
   </Icon>
 );
 const SunIcon = (p) => (
@@ -181,25 +175,62 @@ const certifications = [
   },
 ];
 
+// Real numbers pulled from the DataPilot project — used as the hero's
+// calibration strip instead of a generic stat-card.
+const calibration = [
+  { value: 87, label: "SQL execution accuracy", side: "left", rise: 30 },
+  { value: 91, label: "Ambiguity classification accuracy", side: "right", rise: 54 },
+];
+
 /* ---------------------------------------------------------- */
-/* Commitment to Growth — live GitHub calendar                 */
+/* Calibration strip — the hero's signature visual             */
 /* ---------------------------------------------------------- */
-const CommitmentToGrowth = ({ theme }) => (
-  <section className="rp-card rp-ledger">
-    <div className="rp-ledger-head">
-      <div>
-        <h2 className="rp-eyebrow">Commitment to Growth</h2>
-        <p className="rp-caption">Live GitHub activity · @riteshpatel1884</p>
+const CalibrationStrip = () => {
+  const minorTicks = Array.from({ length: 11 }, (_, i) => i * 10);
+  return (
+    <div className="rp-cal">
+      <div className="rp-cal-track">
+        <div className="rp-cal-baseline" />
+        {minorTicks.map((t) => (
+          <span key={t} className="rp-cal-tick" style={{ left: `${t}%` }} />
+        ))}
+        {calibration.map((m) => (
+          <div
+            key={m.value}
+            className={`rp-cal-marker rp-cal-marker--${m.side}`}
+            style={{ left: `${m.value}%`, "--rise": `${m.rise}px` }}
+          >
+            <span className="rp-cal-stem" />
+            <span className="rp-cal-dot" />
+            <span className="rp-cal-readout">
+              <b>{m.value}%</b> {m.label}
+            </span>
+          </div>
+        ))}
       </div>
     </div>
+  );
+};
 
+/* ---------------------------------------------------------- */
+/* GitHub activity                                              */
+/* ---------------------------------------------------------- */
+const GithubActivity = ({ theme }) => (
+  <section className="rp-panel rp-activity">
+    <div className="rp-section-head">
+      <span className="rp-tick" />
+      <div>
+        <h2>Recent activity</h2>
+        <p className="rp-caption">Live from github.com/riteshpatel1884</p>
+      </div>
+    </div>
     <div className="rp-calendar-wrap">
       <GitHubCalendar
         username="riteshpatel1884"
         colorScheme={theme}
         theme={{
-          light: ["#efefef", "#c4c4c4", "#8a8a8a", "#4a4a4a", "#0a0a0a"],
-          dark: ["#1c1c1c", "#3a3a3a", "#666666", "#a8a8a8", "#f5f5f5"],
+          light: ["#E7E4D8", "#BFDCC7", "#8AC3A2", "#4E9C79", "#2F6E5C"],
+          dark: ["#20241D", "#2B4A3B", "#3D7B60", "#63A98A", "#93D8B4"],
         }}
         fontSize={12}
         blockSize={11}
@@ -215,75 +246,79 @@ const CommitmentToGrowth = ({ theme }) => (
 /* ---------------------------------------------------------- */
 export default function Portfolio() {
   const [theme, setTheme] = useState("light");
+  const tagPalette = ["accent", "warm", "muted"];
 
   return (
     <div className="rp-resume" data-theme={theme}>
       <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;0,700;1,500;1,600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
         .rp-resume {
-          --paper: #ffffff;
-          --paper-2: #f2f2f2;
-          --ink: #0a0a0a;
-          --muted: #6e6e6e;
-          --rule: rgba(10,10,10,0.16);
-          --accent: #0a0a0a;
-          --accent-2: #0a0a0a;
-          --card: #ffffff;
-          --shadow: rgba(10,10,10,0.06);
-          --invert: #ffffff;
-          font-family: ui-sans-serif, -apple-system, "Segoe UI", Roboto, sans-serif;
+          --paper: #EEF0E9;
+          --panel: #F8F9F4;
+          --ink: #191C17;
+          --muted: #666C60;
+          --rule: rgba(25,28,23,0.13);
+          --accent: #2F6E5C;
+          --accent-soft: rgba(47,110,92,0.12);
+          --warm: #B9752E;
+          --warm-soft: rgba(185,117,46,0.14);
+          --shadow: rgba(25,28,23,0.06);
+          font-family: 'IBM Plex Sans', ui-sans-serif, system-ui, sans-serif;
           background: var(--paper);
           color: var(--ink);
           min-height: 100vh;
           transition: background 0.35s ease, color 0.35s ease;
         }
         .rp-resume[data-theme='dark'] {
-          --paper: #0a0a0a;
-          --paper-2: #141414;
-          --ink: #f5f5f5;
-          --muted: #969696;
-          --rule: rgba(245,245,245,0.16);
-          --accent: #f5f5f5;
-          --accent-2: #f5f5f5;
-          --card: #111111;
-          --shadow: rgba(0,0,0,0.6);
-          --invert: #0a0a0a;
+          --paper: #14160F;
+          --panel: #1B1E16;
+          --ink: #ECE9DE;
+          --muted: #9BA192;
+          --rule: rgba(236,233,222,0.13);
+          --accent: #74C09E;
+          --accent-soft: rgba(116,192,158,0.14);
+          --warm: #E0A15E;
+          --warm-soft: rgba(224,161,94,0.15);
+          --shadow: rgba(0,0,0,0.35);
         }
-        .rp-serif { font-family: Georgia, "Iowan Old Style", "Palatino Linotype", "Times New Roman", serif; }
-        .rp-mono { font-family: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace; }
-        .rp-eyebrow {
-          font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
-          font-size: 11px;
-          letter-spacing: 0.18em;
-          text-transform: uppercase;
-          color: var(--ink);
-          font-weight: 700;
-          display: inline-flex;
-          align-items: center;
-          gap: 8px;
-        }
-        .rp-eyebrow::before {
-          content: "";
-          width: 14px;
-          height: 1px;
-          background: var(--ink);
-          display: inline-block;
-        }
-        .rp-caption { font-size: 12px; color: var(--muted); margin-top: 2px; }
-        .rp-card {
-          background: var(--card);
-          border: 1px solid var(--rule);
-          border-radius: 0;
-          box-shadow: none;
-        }
-        .rp-rule { border: none; border-top: 1px solid var(--ink); margin: 0; }
-        .rp-rule-thin { border: none; border-top: 1px solid var(--rule); margin: 0; }
+        .rp-serif { font-family: 'Fraunces', Georgia, serif; }
+        .rp-mono { font-family: 'IBM Plex Mono', ui-monospace, monospace; }
 
-        /* Signature toggle — sliding switch, not an icon button */
+        .rp-resume * { box-sizing: border-box; }
+        .rp-resume a { color: inherit; }
+        .rp-resume :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+        .rp-panel {
+          background: var(--panel);
+          border: 1px solid var(--rule);
+          border-radius: 10px;
+        }
+
+        .rp-tick {
+          width: 9px; height: 9px;
+          background: var(--accent);
+          border-radius: 2px;
+          display: inline-block;
+          flex-shrink: 0;
+          margin-top: 6px;
+        }
+        .rp-section-head { display: flex; gap: 12px; align-items: flex-start; margin-bottom: 26px; }
+        .rp-section-head h2 {
+          font-family: 'Fraunces', Georgia, serif;
+          font-weight: 600;
+          font-size: 21px;
+          margin: 0;
+          letter-spacing: -0.01em;
+        }
+        .rp-caption { font-size: 12.5px; color: var(--muted); margin: 3px 0 0; }
+
+        /* Theme toggle */
         .rp-switch {
-          width: 64px; height: 32px;
-          border: 1px solid var(--ink);
+          width: 58px; height: 30px;
+          border: 1px solid var(--rule);
           border-radius: 999px;
-          background: var(--paper);
+          background: var(--panel);
           position: relative;
           cursor: pointer;
           padding: 0;
@@ -293,261 +328,325 @@ export default function Portfolio() {
         .rp-switch-knob {
           position: absolute;
           top: 2px; left: 2px;
-          width: 26px; height: 26px;
+          width: 24px; height: 24px;
           border-radius: 999px;
-          background: var(--ink);
-          color: var(--paper);
+          background: var(--accent);
+          color: var(--panel);
           display: flex; align-items: center; justify-content: center;
-          transition: transform 0.32s cubic-bezier(.65,0,.35,1), background 0.3s ease, color 0.3s ease;
+          transition: transform 0.32s cubic-bezier(.65,0,.35,1);
         }
-        .rp-resume[data-theme='dark'] .rp-switch-knob { transform: translateX(32px); }
-        .rp-switch-label {
-          font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
-          font-size: 10px;
-          letter-spacing: 0.14em;
-          text-transform: uppercase;
+        .rp-resume[data-theme='dark'] .rp-switch-knob { transform: translateX(28px); }
+
+        /* ---- Hero ---- */
+        .rp-hero-name {
+          font-size: clamp(36px, 6vw, 54px);
+          font-weight: 700;
+          letter-spacing: -0.02em;
+          line-height: 1.02;
+          margin: 0;
+        }
+        .rp-hero-role {
+          font-family: 'Fraunces', Georgia, serif;
+          font-style: italic;
+          font-weight: 500;
+          font-size: 17px;
+          color: var(--accent);
+          margin: 10px 0 0;
+        }
+        .rp-hero-tagline {
+          font-size: 14.5px;
+          color: var(--muted);
+          max-width: 46ch;
+          line-height: 1.55;
+          margin: 12px 0 0;
+        }
+        .rp-contact-row {
+          display: flex; flex-wrap: wrap; gap: 16px 22px;
+          margin-top: 22px;
+          font-size: 13px;
           color: var(--muted);
         }
+        .rp-contact-row a, .rp-contact-row span { display: flex; align-items: center; gap: 7px; }
+        .rp-contact-row a:hover { color: var(--ink); }
 
-        /* Commitment to Growth card */
-        .rp-ledger { padding: 28px 24px; margin: 0; position: relative; }
-        .rp-ledger-head { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 20px; margin-bottom: 22px; }
-        .rp-calendar-wrap { overflow-x: auto; padding: 4px 2px 6px; }
-        .rp-calendar-wrap .react-activity-calendar__scroll-container { padding-bottom: 4px; }
-        .rp-calendar-wrap text { fill: var(--muted) !important; font-family: ui-monospace, monospace !important; }
-
-        /* Skill pill — flat outlined rectangle, no radius */
-        .rp-pill {
-          border: 1px solid var(--ink); border-radius: 0; padding: 4px 11px;
-          font-size: 11.5px; color: var(--ink); white-space: nowrap;
-          font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
-          transition: background 0.15s ease, color 0.15s ease;
+        /* Calibration strip */
+        .rp-cal { margin-top: 34px; max-width: 460px; }
+        .rp-cal-track { position: relative; height: 78px; }
+        .rp-cal-baseline {
+          position: absolute; left: 0; right: 0; bottom: 8px;
+          height: 1px; background: var(--rule);
         }
-        .rp-pill:hover { background: var(--ink); color: var(--paper); }
+        .rp-cal-tick {
+          position: absolute; bottom: 5px; width: 1px; height: 6px;
+          background: var(--rule); transform: translateX(-0.5px);
+        }
+        .rp-cal-marker { position: absolute; bottom: 8px; }
+        .rp-cal-stem {
+          position: absolute; bottom: 0; left: 0;
+          width: 1px; height: var(--rise);
+          background: var(--accent); opacity: 0.55;
+        }
+        .rp-cal-dot {
+          position: absolute; bottom: -3px; left: -3px;
+          width: 7px; height: 7px; border-radius: 999px;
+          background: var(--accent);
+        }
+        .rp-cal-readout {
+          position: absolute;
+          bottom: calc(var(--rise) + 6px);
+          font-size: 11.5px; color: var(--muted);
+          white-space: nowrap;
+        }
+        .rp-cal-readout b { color: var(--ink); font-size: 13px; margin-right: 4px; }
+        .rp-cal-marker--left .rp-cal-readout { right: 6px; text-align: right; }
+        .rp-cal-marker--right .rp-cal-readout { left: 6px; text-align: left; }
 
-        /* Timeline dot */
-        .rp-dot { width: 6px; height: 6px; border-radius: 0; background: var(--ink); transform: rotate(45deg); }
+        /* Activity */
+        .rp-activity { padding: 28px 26px; margin: 0; }
+        .rp-calendar-wrap { overflow-x: auto; padding: 2px 2px 4px; }
+        .rp-calendar-wrap text { fill: var(--muted) !important; font-family: 'IBM Plex Mono', monospace !important; }
 
-        /* Project link */
-        .rp-project-link { text-decoration: none; border-bottom: 1px solid var(--ink); padding-bottom: 1px; }
-
-        .rp-index {
-          font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
-          font-size: 11px;
-          color: var(--muted);
+        /* Timeline (experience + projects) */
+        .rp-timeline { position: relative; }
+        .rp-timeline-rail {
+          position: absolute; left: 6px; top: 6px; bottom: 6px;
+          width: 1px; background: var(--rule);
+        }
+        .rp-timeline-item {
+          position: relative;
+          padding-left: 34px;
+          padding-bottom: 34px;
+        }
+        .rp-timeline-item:last-child { padding-bottom: 0; }
+        .rp-node-dot {
+          position: absolute; left: 0; top: 5px;
+          width: 13px; height: 13px; border-radius: 999px;
+          background: var(--panel);
+          border: 2px solid var(--dot-color, var(--accent));
+        }
+        .rp-node-date {
+          font-family: 'IBM Plex Mono', monospace;
+          font-size: 11px; color: var(--muted);
+          display: block; margin-bottom: 6px;
+        }
+        .rp-item-title {
+          font-family: 'Fraunces', Georgia, serif;
+          font-weight: 600; font-size: 19px;
+          margin: 0;
+        }
+        .rp-item-sub { font-size: 13px; color: var(--muted); margin: 3px 0 12px; }
+        .rp-item-points { display: flex; flex-direction: column; gap: 7px; margin: 0 0 14px; padding: 0; list-style: none; }
+        .rp-item-points li { display: flex; gap: 10px; font-size: 13.5px; line-height: 1.6; }
+        .rp-item-points li::before {
+          content: ""; width: 5px; height: 5px; border-radius: 999px;
+          background: var(--muted); opacity: 0.6;
+          margin-top: 8px; flex-shrink: 0;
+        }
+        .rp-tag-row { display: flex; flex-wrap: wrap; gap: 7px; }
+        .rp-tag {
+          font-size: 12px; padding: 4px 10px; border-radius: 999px;
+          background: var(--tag-bg); color: var(--tag-color);
+          font-weight: 500;
+        }
+        .rp-project-link {
+          font-size: 12.5px; color: var(--accent);
+          text-decoration: underline; text-underline-offset: 3px;
+          margin-left: 10px;
         }
 
-        @media print {
-          .rp-switch { display: none; }
+        /* Skills */
+        .rp-skill-group { margin-bottom: 20px; }
+        .rp-skill-group:last-child { margin-bottom: 0; }
+        .rp-skill-label {
+          font-size: 12px; font-weight: 600; color: var(--muted);
+          margin-bottom: 9px; display: block;
+        }
+        .rp-skill-tags { display: flex; flex-wrap: wrap; gap: 7px; }
+        .rp-skill-tag {
+          font-size: 12.5px; padding: 5px 12px; border-radius: 7px;
+          background: var(--panel); border: 1px solid var(--rule);
+        }
+
+        /* Education */
+        .rp-edu-row {
+          display: flex; justify-content: space-between; gap: 16px;
+          padding: 15px 0; border-bottom: 1px solid var(--rule);
+        }
+        .rp-edu-row:last-child { border-bottom: none; }
+        .rp-edu-degree { font-family: 'Fraunces', Georgia, serif; font-weight: 600; font-size: 15.5px; margin: 0; }
+        .rp-edu-school { font-size: 12.5px; color: var(--muted); margin: 3px 0 0; }
+        .rp-edu-score { font-family: 'IBM Plex Mono', monospace; font-size: 13px; text-align: right; }
+        .rp-edu-year { font-size: 11px; color: var(--muted); display: block; margin-bottom: 3px; }
+
+        @media (prefers-reduced-motion: reduce) {
+          .rp-resume * { animation: none !important; transition: none !important; }
         }
       `}</style>
 
-      <div className="max-w-[820px] mx-auto px-5 md:px-10 py-10 md:py-16">
-        {/* Masthead */}
-        <header className="flex items-start justify-between gap-6 mb-10">
+      <div className="max-w-[760px] mx-auto px-5 md:px-8 py-12 md:py-16">
+        {/* Hero */}
+        <motion.header
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
+          className="flex items-start justify-between gap-6 mb-16"
+        >
           <div>
-            <h1
-              className="rp-serif"
-              style={{
-                fontSize: "clamp(34px, 6vw, 52px)",
-                fontWeight: 700,
-                letterSpacing: "-0.02em",
-                lineHeight: 1.0,
-                borderBottom: "3px solid var(--ink)",
-                display: "inline-block",
-                paddingBottom: 6,
-              }}
-            >
-              Ritesh Patel
-            </h1>
-            <p className="rp-eyebrow" style={{ marginTop: 12 }}>
-              AI Engineer
+            <h1 className="rp-serif rp-hero-name">Ritesh Patel</h1>
+            <p className="rp-hero-role">AI Engineer — RAG systems &amp; LLM evaluation</p>
+            <p className="rp-hero-tagline">
+              I build retrieval systems, then build the harnesses that tell you whether to trust them.
             </p>
-            <div className="flex flex-wrap gap-x-5 gap-y-2 mt-4 rp-mono" style={{ fontSize: 12, color: "var(--muted)" }}>
-              <span className="flex items-center gap-1.5"><PinIcon size={13} /> Ghaziabad, India</span>
-              <a href="mailto:riteshpatel1884@gmail.com" className="flex items-center gap-1.5 hover:opacity-70">
-                <MailIcon size={13} /> riteshpatel1884@gmail.com
-              </a>
-              <span className="flex items-center gap-1.5"><PhoneIcon size={13} /> +91 8858295418</span>
+
+            <div className="rp-contact-row">
+              <span><PinIcon size={13} /> Ghaziabad, India</span>
+              <a href="mailto:riteshpatel1884@gmail.com"><MailIcon size={13} /> riteshpatel1884@gmail.com</a>
+              <span><PhoneIcon size={13} /> +91 8858295418</span>
             </div>
+
+            <CalibrationStrip />
           </div>
 
-          <div className="flex flex-col items-end gap-4 shrink-0">
-            <div className="flex items-center gap-2">
-              <span className="rp-switch-label">{theme === "light" ? "Day" : "Night"}</span>
-              <button
-                onClick={() => setTheme(theme === "light" ? "dark" : "light")}
-                className="rp-switch"
-                aria-label="Toggle theme"
-              >
-                <span className="rp-switch-knob">
-                  {theme === "light" ? <SunIcon size={13} /> : <MoonIcon size={13} />}
-                </span>
-              </button>
-            </div>
-            <div className="flex gap-3" style={{ color: "var(--ink)" }}>
-              <a href="https://github.com/riteshpatel1884" target="_blank" rel="noopener noreferrer">
-                <GithubIcon size={17} className="hover:opacity-50 cursor-pointer" />
+          <div className="flex flex-col items-end gap-5 shrink-0">
+            <button
+              onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+              className="rp-switch"
+              aria-label="Toggle theme"
+            >
+              <span className="rp-switch-knob">
+                {theme === "light" ? <SunIcon size={12} /> : <MoonIcon size={12} />}
+              </span>
+            </button>
+            <div className="flex gap-4">
+              <a href="https://github.com/riteshpatel1884" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+                <GithubIcon size={18} className="hover:opacity-60" />
               </a>
-              <a href="https://linkedin.com/in/riteshpatel1884" target="_blank" rel="noopener noreferrer">
-                <LinkedinIcon size={17} className="hover:opacity-50 cursor-pointer" />
+              <a href="https://linkedin.com/in/riteshpatel1884" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                <LinkedinIcon size={18} className="hover:opacity-60" />
               </a>
             </div>
           </div>
-        </header>
+        </motion.header>
 
-        <hr className="rp-rule mb-10" />
-
-    
-
-        {/* Commitment to Growth */}
-        <section className="mb-12">
-          <CommitmentToGrowth theme={theme} />
+        {/* GitHub activity */}
+        <section className="mb-14">
+          <GithubActivity theme={theme} />
         </section>
 
         {/* Experience */}
-        <section className="mb-12">
-          <h2 className="rp-eyebrow mb-6">Experience</h2>
-          <div className="flex flex-col">
-            {experience.map((e, i) => (
-              <motion.div
-                key={e.company}
-                initial={{ opacity: 0, y: 12 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-40px" }}
-                transition={{ duration: 0.4, delay: i * 0.05 }}
-                className="grid md:grid-cols-[150px_1fr] gap-2 md:gap-8 py-6"
-                style={{ borderTop: i === 0 ? "none" : "1px solid var(--rule)" }}
-              >
-                <div>
-                  <span className="rp-mono block" style={{ fontSize: 11, color: "var(--muted)" }}>{e.date}</span>
+        <section className="mb-14">
+          <div className="rp-section-head">
+            <span className="rp-tick" style={{ background: "var(--warm)" }} />
+            <div><h2>Experience</h2></div>
+          </div>
+          <div className="rp-timeline">
+            <div className="rp-timeline-rail" />
+            {experience.map((e) => (
+              <div key={e.company} className="rp-timeline-item">
+                <span className="rp-node-dot" style={{ "--dot-color": "var(--warm)" }} />
+                <span className="rp-node-date">{e.date}</span>
+                <h3 className="rp-serif rp-item-title">{e.role}</h3>
+                <p className="rp-item-sub">{e.company}</p>
+                <ul className="rp-item-points">
+                  {e.points.map((pt, idx) => <li key={idx}>{pt}</li>)}
+                </ul>
+                <div className="rp-tag-row">
+                  {e.tech.map((t) => (
+                    <span key={t} className="rp-tag" style={{ "--tag-bg": "var(--warm-soft)", "--tag-color": "var(--warm)" }}>{t}</span>
+                  ))}
                 </div>
-                <div>
-                  <div className="flex items-baseline gap-2 flex-wrap">
-                    <h3 className="rp-serif" style={{ fontSize: 20, fontWeight: 700 }}>{e.role}</h3>
-                  </div>
-                  <p style={{ fontSize: 13, color: "var(--muted)", marginTop: 2, marginBottom: 10 }}>{e.company}</p>
-                  <ul style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-                    {e.points.map((pt, idx) => (
-                      <li key={idx} className="flex gap-2.5" style={{ fontSize: 13.5, lineHeight: 1.55, color: "var(--ink)" }}>
-                        <span className="rp-dot shrink-0" style={{ marginTop: 7 }} />
-                        {pt}
-                      </li>
-                    ))}
-                  </ul>
-                  <div className="flex flex-wrap gap-2 mt-4">
-                    {e.tech.map((t) => (
-                      <span key={t} className="rp-pill">{t}</span>
-                    ))}
-                  </div>
-                </div>
-              </motion.div>
+              </div>
             ))}
           </div>
         </section>
 
         {/* Projects */}
-        <section className="mb-12">
-          <h2 className="rp-eyebrow mb-6">Selected Work</h2>
-          <div className="flex flex-col">
-            {projects.map((p, i) => (
-              <motion.div
-                key={p.title}
-                initial={{ opacity: 0, y: 12 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-40px" }}
-                transition={{ duration: 0.4, delay: i * 0.05 }}
-                className="grid md:grid-cols-[150px_1fr] gap-2 md:gap-8 py-6"
-                style={{ borderTop: i === 0 ? "none" : "1px solid var(--rule)" }}
-              >
-                <div>
-                  <span className="rp-index block">{String(i + 1).padStart(2, "0")}</span>
-                  <span className="rp-mono block mt-2" style={{ fontSize: 11, color: "var(--muted)" }}>{p.date}</span>
-                  <span className="rp-mono block mt-1" style={{ fontSize: 10, color: "var(--ink)", letterSpacing: "0.06em", textTransform: "uppercase", fontWeight: 700 }}>
-                    {p.tag}
-                  </span>
-                </div>
-                <div>
-                  <div className="flex items-baseline gap-2 flex-wrap">
-                    <h3 className="rp-serif" style={{ fontSize: 20, fontWeight: 700 }}>{p.title}</h3>
+        <section className="mb-14">
+          <div className="rp-section-head">
+            <span className="rp-tick" />
+            <div><h2>Selected work</h2></div>
+          </div>
+          <div className="rp-timeline">
+            <div className="rp-timeline-rail" />
+            {projects.map((p, i) => {
+              const palette = tagPalette[i % tagPalette.length];
+              const tagBg = palette === "warm" ? "var(--warm-soft)" : "var(--accent-soft)";
+              const tagColor = palette === "warm" ? "var(--warm)" : "var(--accent)";
+              const dotColor = palette === "warm" ? "var(--warm)" : "var(--accent)";
+              return (
+                <div key={p.title} className="rp-timeline-item">
+                  <span className="rp-node-dot" style={{ "--dot-color": dotColor }} />
+                  <span className="rp-node-date">{p.date} · {p.tag}</span>
+                  <div className="flex items-baseline flex-wrap">
+                    <h3 className="rp-serif rp-item-title">{p.title}</h3>
                     {p.link && (
-                      <a
-                        href={p.href || `https://${p.link}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center gap-1 rp-mono rp-project-link"
-                        style={{ fontSize: 11, color: "var(--ink)" }}
-                      >
-                        <ArrowIcon size={11} /> {p.link}
+                      <a href={p.href} target="_blank" rel="noopener noreferrer" className="rp-project-link">
+                        {p.link}
                       </a>
                     )}
                   </div>
-                  <p style={{ fontSize: 13, color: "var(--muted)", marginTop: 2, marginBottom: 10 }}>{p.subtitle}</p>
-                  <ul style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-                    {p.points.map((pt, idx) => (
-                      <li key={idx} className="flex gap-2.5" style={{ fontSize: 13.5, lineHeight: 1.55, color: "var(--ink)" }}>
-                        <span className="rp-dot shrink-0" style={{ marginTop: 7 }} />
-                        {pt}
-                      </li>
-                    ))}
+                  <p className="rp-item-sub">{p.subtitle}</p>
+                  <ul className="rp-item-points">
+                    {p.points.map((pt, idx) => <li key={idx}>{pt}</li>)}
                   </ul>
-                  <div className="flex flex-wrap gap-2 mt-4">
+                  <div className="rp-tag-row">
                     {p.tech.map((t) => (
-                      <span key={t} className="rp-pill">{t}</span>
+                      <span key={t} className="rp-tag" style={{ "--tag-bg": tagBg, "--tag-color": tagColor }}>{t}</span>
                     ))}
                   </div>
                 </div>
-              </motion.div>
-            ))}
+              );
+            })}
           </div>
         </section>
 
         {/* Skills + Education */}
-        <div className="grid md:grid-cols-2 gap-12 mb-12">
+        <div className="grid md:grid-cols-2 gap-14 mb-14">
           <section>
-            <h2 className="rp-eyebrow mb-6">Skills</h2>
-            <div className="flex flex-col gap-5">
-              {skillGroups.map((g) => (
-                <div key={g.label}>
-                  <span className="rp-mono block mb-2" style={{ fontSize: 10.5, color: "var(--muted)", letterSpacing: "0.06em", textTransform: "uppercase" }}>
-                    {g.label}
-                  </span>
-                  <div className="flex flex-wrap gap-2">
-                    {g.items.map((s) => (
-                      <span key={s} className="rp-pill">{s}</span>
-                    ))}
-                  </div>
-                </div>
-              ))}
+            <div className="rp-section-head">
+              <span className="rp-tick" style={{ background: "var(--warm)" }} />
+              <div><h2>Skills</h2></div>
             </div>
+            {skillGroups.map((g) => (
+              <div key={g.label} className="rp-skill-group">
+                <span className="rp-skill-label">{g.label}</span>
+                <div className="rp-skill-tags">
+                  {g.items.map((s) => <span key={s} className="rp-skill-tag">{s}</span>)}
+                </div>
+              </div>
+            ))}
           </section>
 
           <section>
-            <h2 className="rp-eyebrow mb-6">Education</h2>
-            <div className="flex flex-col gap-5">
-              {education.map((e) => (
-                <div key={e.degree} className="flex justify-between gap-4" style={{ borderBottom: "1px solid var(--rule)", paddingBottom: 14 }}>
-                  <div>
-                    <h4 className="rp-serif" style={{ fontSize: 15.5, fontWeight: 700 }}>{e.degree}</h4>
-                    <p style={{ fontSize: 12.5, color: "var(--muted)", marginTop: 2 }}>{e.school}</p>
-                  </div>
-                  <div className="text-right shrink-0">
-                    <span className="rp-mono block" style={{ fontSize: 11, color: "var(--muted)" }}>{e.year}</span>
-                    <span className="rp-mono block mt-1" style={{ fontSize: 12.5, color: "var(--ink)", fontWeight: 700 }}>{e.score}</span>
-                  </div>
-                </div>
-              ))}
+            <div className="rp-section-head">
+              <span className="rp-tick" />
+              <div><h2>Education</h2></div>
             </div>
+            {education.map((e) => (
+              <div key={e.degree} className="rp-edu-row">
+                <div>
+                  <h4 className="rp-edu-degree">{e.degree}</h4>
+                  <p className="rp-edu-school">{e.school}</p>
+                </div>
+                <div>
+                  <span className="rp-edu-year">{e.year}</span>
+                  <span className="rp-edu-score">{e.score}</span>
+                </div>
+              </div>
+            ))}
           </section>
         </div>
 
         {/* Certifications */}
-        <section className="mb-12">
-          <h2 className="rp-eyebrow mb-6">Certifications</h2>
+        <section className="mb-14">
+          <div className="rp-section-head">
+            <span className="rp-tick" style={{ background: "var(--warm)" }} />
+            <div><h2>Certifications</h2></div>
+          </div>
           <div className="flex flex-col gap-3">
             {certifications.map((c) => (
-              <div key={c.title} className="flex items-start gap-3" style={{ fontSize: 13.5, color: "var(--ink)" }}>
-                <AwardIcon size={16} className="shrink-0" style={{ color: "var(--ink)", marginTop: 2 }} />
+              <div key={c.title} className="flex items-start gap-3" style={{ fontSize: 13.5 }}>
+                <AwardIcon size={16} className="shrink-0" style={{ color: "var(--warm)", marginTop: 2 }} />
                 <div className="flex flex-col md:flex-row md:items-baseline md:gap-3">
                   <span>{c.title}</span>
                   <span className="rp-mono" style={{ fontSize: 11, color: "var(--muted)" }}>{c.date}</span>
@@ -558,31 +657,26 @@ export default function Portfolio() {
         </section>
 
         {/* Contact */}
-        <section style={{ borderTop: "1px solid var(--ink)", paddingTop: 32 }} className="flex flex-col md:flex-row justify-between gap-6">
-          <div>
-            <h2 className="rp-serif" style={{ fontSize: 28, fontWeight: 700 }}>Let's work together.</h2>
-          </div>
+        <section style={{ borderTop: "1px solid var(--rule)", paddingTop: 34 }} className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+          <h2 className="rp-serif" style={{ fontSize: 27, fontWeight: 600 }}>Let's work together.</h2>
           <a
             href="https://mail.google.com/mail/u/0/?fs=1&tf=cm&to=riteshpatel1884@gmail.com"
-            className="flex items-center gap-2 self-start rp-mono"
+            className="flex items-center gap-2"
             style={{
-              fontSize: 12.5,
-              padding: "10px 18px",
-              border: "1px solid var(--ink)",
-              borderRadius: 0,
-              color: "var(--ink)",
-              background: "var(--paper)",
-              transition: "background 0.15s ease, color 0.15s ease",
+              fontSize: 13,
+              padding: "10px 20px",
+              borderRadius: 999,
+              color: "var(--panel)",
+              background: "var(--accent)",
+              fontWeight: 500,
             }}
-            onMouseEnter={(ev) => { ev.currentTarget.style.background = "var(--ink)"; ev.currentTarget.style.color = "var(--paper)"; }}
-            onMouseLeave={(ev) => { ev.currentTarget.style.background = "var(--paper)"; ev.currentTarget.style.color = "var(--ink)"; }}
           >
             <MailIcon size={14} /> Mail me
           </a>
         </section>
 
-        <footer className="flex flex-col md:flex-row justify-between gap-2 mt-14 rp-mono" style={{ fontSize: 10, color: "var(--muted)", letterSpacing: "0.06em", textTransform: "uppercase" }}>
-          <span>© Ritesh Patel — 2026</span>
+        <footer className="flex flex-col md:flex-row justify-between gap-2 mt-14" style={{ fontSize: 11.5, color: "var(--muted)" }}>
+          <span>© 2026 Ritesh Patel</span>
           <span>Ghaziabad, India</span>
         </footer>
       </div>
